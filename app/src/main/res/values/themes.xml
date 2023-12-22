@@ -1,0 +1,18 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.UserFinderAndroid" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:textColorPrimary">@color/light</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="android:fontFamily">@font/dm_sans_font_family</item>
+        <item name="android:statusBarColor">@color/primary</item>
+    </style>
+
+    <style name="Theme.UserFinderAndroid" parent="Base.Theme.UserFinderAndroid" />
+
+    <style name="circleImageView" parent="">
+            <item name="cornerFamily">rounded</item>
+            <item name="cornerSize">50%</item>
+    </style>
+</resources>
