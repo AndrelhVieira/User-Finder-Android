@@ -35,12 +35,12 @@
             android:id="@+id/nav_about_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:onClick="navigateToAboutScreen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/nav_about"
-            app:tint="@color/light"
-            android:onClick="navigateToAboutScreen"/>
+            app:tint="@color/light" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -83,48 +83,59 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <ScrollView
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/history_content_container"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintBottom_toTopOf="@id/guideline3">
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="History"
+            android:textAlignment="center"
+            android:textColor="@color/light"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView3"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="History"
-                android:textAlignment="center"
-                android:textColor="@color/light"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:paddingTop="32dp"
-                android:paddingBottom="16dp"
-                app:srcCompat="@drawable/empty_image" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="There's nothing here yet! We're waiting for your searches!"
-                android:textAlignment="center"
-                android:textColor="@color/light"
-                android:textSize="16sp" />
+                android:orientation="vertical">
 
 
-        </LinearLayout>
-    </ScrollView>
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:paddingTop="32dp"
+                    android:paddingBottom="16dp"
+                    app:srcCompat="@drawable/empty_image" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="There's nothing here yet! We're waiting for your searches!"
+                    android:textAlignment="center"
+                    android:textColor="@color/light"
+                    android:textSize="16sp" />
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

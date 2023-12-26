@@ -35,12 +35,12 @@
             android:id="@+id/nav_history_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:onClick="navigateToHistoryScreen"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/nav_history"
-            app:tint="@color/light"
-            android:onClick="navigateToHistoryScreen"/>
+            app:tint="@color/light" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -83,84 +83,94 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <ScrollView
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/history_content_container"
         android:layout_width="match_parent"
-        android:layout_height="440dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/guideline3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="About"
+            android:textAlignment="center"
+            android:textColor="@color/light"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView3"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="About"
-                android:textAlignment="center"
-                android:textColor="@color/light"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/about_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:text="The main purpose of this application is to streamline access to the account of friends, employees or even yours, easily providing the path to the main Github projects for that user. You can also see what your latest searches were through your search history."
-                android:textColor="@color/light"
-                android:textSize="20sp"
-                />
 
-            <TextView
-                android:id="@+id/how_it_works_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="How it works"
-                android:textAlignment="center"
-                android:textColor="@color/light"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/about_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="The main purpose of this application is to streamline access to the account of friends, employees or even yours, easily providing the path to the main Github projects for that user. You can also see what your latest searches were through your search history."
+                    android:textColor="@color/light"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/step_one_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:text="1. On the search page you will find a field to enter the username (Attention: only the username) and a button to do the search."
-                android:textColor="@color/light"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/how_it_works_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="How it works"
+                    android:textAlignment="center"
+                    android:textColor="@color/light"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/step_two_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:text="2. As soon as you click the button, a record of your search is visible in your search history and you can repeat it."
-                android:textColor="@color/light"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/step_one_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="1. On the search page you will find a field to enter the username (Attention: only the username) and a button to do the search."
+                    android:textColor="@color/light"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/step_three_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="24dp"
-                android:text="3. Your search will return the main information and repositories about that user, thus facilitating, the access to the projects of that account."
-                android:textColor="@color/light"
-                android:textSize="20sp" />
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:id="@+id/step_two_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="2. As soon as you click the button, a record of your search is visible in your search history and you can repeat it."
+                    android:textColor="@color/light"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/step_three_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:text="3. Your search will return the main information and repositories about that user, thus facilitating, the access to the projects of that account."
+                    android:textColor="@color/light"
+                    android:textSize="20sp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.constraintlayout.widget.ConstraintLayout>
