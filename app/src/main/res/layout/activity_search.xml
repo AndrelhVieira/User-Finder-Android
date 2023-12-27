@@ -149,15 +149,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
-    <TextView
-        android:id="@+id/result_of_search"
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:textAlignment="center"
-        android:textColor="@color/light"
-        android:textSize="18sp" />
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_input_container">
+        <TextView
+            android:id="@+id/result_of_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            android:textAlignment="center"
+            android:textColor="@color/light"
+            android:textSize="18sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ScrollView
         android:id="@+id/result_scrollview"

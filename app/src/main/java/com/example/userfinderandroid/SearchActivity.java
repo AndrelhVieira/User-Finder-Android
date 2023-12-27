@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -34,14 +37,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class SearchActivity extends AppCompatActivity {
     private TextView resultOfSearch;
     private EditText usernameToSearch;
     private ScrollView resultScrollView;
-
     private LinearLayoutCompat linearLayoutCompat;
+    private Button retrieveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,7 @@ public class SearchActivity extends AppCompatActivity {
         usernameToSearch = findViewById(R.id.username_to_search);
         resultOfSearch = findViewById(R.id.result_of_search);
         resultScrollView = findViewById(R.id.result_scrollview);
+        retrieveButton = findViewById(R.id.retrieve_button);
 
         linearLayoutCompat = new LinearLayoutCompat(this);
         linearLayoutCompat.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -62,6 +68,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void onSearchButtonClick(View view) {
+        retrieveButton.setEnabled(false);
         InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
@@ -73,6 +80,7 @@ public class SearchActivity extends AppCompatActivity {
             new GithubApiTask().execute(apiUrl);
         } else {
             resultOfSearch.setText("Please enter a GitHub username.");
+            retrieveButton.setEnabled(true);
         }
     }
 
@@ -123,11 +131,18 @@ public class SearchActivity extends AppCompatActivity {
 
                 Bitmap avatarImage = new LoadImageTask().execute(avatar_url).get();
 
+                if (linearLayoutCompat.getChildCount() > 0) {
+                    linearLayoutCompat.removeAllViews();
+                    resultScrollView.removeAllViews();
+                }
                 createUserCard(name, login, avatarImage, followers, following, public_repos);
                 resultOfSearch.setVisibility(View.INVISIBLE);
+
+                saveSearchOnStorage(name, login);
             } catch (JSONException e) {
                 e.printStackTrace();
-                resultOfSearch.setText("Error parsing GitHub API response.");
+                resultOfSearch.setText("User not found");
+                retrieveButton.setEnabled(true);
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -173,10 +188,12 @@ public class SearchActivity extends AppCompatActivity {
 
                 LinearLayoutCompat repos_cards = renderRepositoriesCard(jsonResult);
                 linearLayoutCompat.addView(repos_cards);
+                usernameToSearch.setText("");
             } catch (JSONException e) {
                 e.printStackTrace();
                 resultOfSearch.setText("Error parsing GitHub API response for repositories.");
             }
+            retrieveButton.setEnabled(true);
         }
     }
 
@@ -247,7 +264,14 @@ public class SearchActivity extends AppCompatActivity {
             repo_button.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             repo_button.setTypeface(null, Typeface.BOLD);
 
-            // ADICIONAR LINK DO REPO NO CLIQUE DO BOTÃO
+            repo_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("repo url - " + repo_url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(repo_url));
+                    startActivity(intent);
+                }
+            });
 
 
             linearLayoutCompatRepo.addView(repo_name);
@@ -403,6 +427,15 @@ public class SearchActivity extends AppCompatActivity {
         String apiUrl = "https://api.github.com/users/" + username + "/repos";
 
         new RepositoriesTask().execute(apiUrl);
+    }
+
+    private void saveSearchOnStorage(String name, String login) {
+        List<UserSearch> existingList = MyStorageManager.getObjectList(getApplicationContext());
+        List<UserSearch> objectList = (existingList != null) ? existingList : new ArrayList<>();
+        objectList.add(new UserSearch(name, login));
+
+        // Salvar a lista atualizada no storage
+        MyStorageManager.saveObjectList(getApplicationContext(), objectList);
     }
 
     private int getDimensionsInDp(int value) {
