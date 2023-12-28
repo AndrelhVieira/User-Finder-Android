@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -41,7 +43,7 @@ public class HistoryActivity extends AppCompatActivity {
         System.out.println("retrievedList - " + retrievedList.toString());
 
         if (retrievedList != null && !retrievedList.isEmpty()) {
-            historyScrollView.removeAllViews();
+            emptyHistoryContainer.setVisibility(View.GONE);
             for (UserSearch user : retrievedList) {
                 String fullName = user.getFullName();
                 String username = user.getUsername();
@@ -50,6 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
             }
         } else {
             System.out.println("STORAGE VAZIO");
+            emptyHistoryContainer.setVisibility(View.VISIBLE);
         }
         historyScrollView.addView(linearLayoutHistoryContainer);
     }
@@ -84,6 +87,12 @@ public class HistoryActivity extends AppCompatActivity {
         removeButton.setTextColor(ContextCompat.getColor(this, R.color.light));
         removeButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         removeButton.setBackgroundColor(ContextCompat.getColor(this, R.color.secondary));
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRemoveConfirmationDialog(fullName, username);
+            }
+        });
 
         linearLayoutHistoryCard.addView(fullnameTextView);
         linearLayoutHistoryCard.addView(usernameTextView);
@@ -92,6 +101,53 @@ public class HistoryActivity extends AppCompatActivity {
         linearLayoutHistoryContainer.addView(linearLayoutHistoryCard);
         linearLayoutHistoryContainer.addView(renderSpacer(10));
     }
+
+    private void showRemoveConfirmationDialog(final String fullName, final String username) {
+        // Implemente um diálogo de confirmação (AlertDialog) aqui
+        // Exiba uma mensagem perguntando se o usuário realmente deseja remover a pesquisa
+        // Se confirmado, chame o método para remover e atualizar a interface do usuário
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmação")
+                .setMessage("Deseja remover esta pesquisa?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Remover a pesquisa da lista e atualizar a interface do usuário
+                        removeFromHistoryList(fullName, username);
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+    private void removeFromHistoryList(String fullName, String username) {
+        // Recuperar a lista atual do SharedPreferences
+        List<UserSearch> userList = MyStorageManager.getObjectList(getApplicationContext());
+
+        // Remover o item correspondente da lista
+        UserSearch userToRemove = null;
+        for (UserSearch user : userList) {
+            if (user.getFullName().equals(fullName) && user.getUsername().equals(username)) {
+                userToRemove = user;
+                break;
+            }
+        }
+
+        if (userToRemove != null) {
+            userList.remove(userToRemove);
+
+            // Salvar a lista atualizada no SharedPreferences
+            MyStorageManager.saveObjectList(getApplicationContext(), userList);
+
+            // Atualizar a interface do usuário
+            recreate(); // Isso reinicia a atividade para refletir as alterações
+        }
+    }
+
 
     private View renderSpacer(int value) {
         View view = new View(this);
