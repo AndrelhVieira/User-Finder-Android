@@ -40,7 +40,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         // Para recuperar a lista de objetos do storage
         List<UserSearch> retrievedList = MyStorageManager.getObjectList(getApplicationContext());
-        System.out.println("retrievedList - " + retrievedList.toString());
 
         if (retrievedList != null && !retrievedList.isEmpty()) {
             emptyHistoryContainer.setVisibility(View.GONE);
